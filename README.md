@@ -1,8 +1,10 @@
-# unified-error-codes
+# unified-error-codes by CharIN
 
 ## Project overview
 
 Unified Error Codes is a CharIN-led effort to create a standardized, consistent approach to error codes across the EV charging ecosystem (EV, EVSE, CSO/CPO). The project addresses issues such as inconsistent definitions, limited diagnostic detail, proprietary/undefined error exchange mechanisms, and complex interconnectivity that can contribute to delayed repairs, lower reliability, and reduced user trust in public charging infrastructure.
+
+<img width="295" height="251" alt="image" src="https://github.com/user-attachments/assets/2c4efdfd-8829-4631-a5da-1160f2d6c60e" />
 
 ## Scope and deliverables
 
