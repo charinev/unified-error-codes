@@ -76,7 +76,7 @@ Defining how the Charging Station should deliver this reliability-essential data
 
 ### Error and Diagnostic Exchange Protocol between Charging Station and EV
 
-Defining how error and diagnostic data should be encoded over ISO 15118-202. This also includes defining a potential pathway to exchange critical diagnostic data *before* high-level communication is established.
+Defining how error and diagnostic data should be encoded between the (Charging Station) and EV either through ISO 15118-202 or another redudant pathway. This also includes defining a potential pathway to exchange critical diagnostic data *before* high-level communication is established.
 
 ### Alignment with Vehicle Diagnostics (DTC/DTS)
 
