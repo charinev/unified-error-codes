@@ -10,15 +10,15 @@ The project structures error codes into three categories:
 Hardware, Communication, Software.
 
 Planned milestones:
-Hardware error codes: definition and coverage refined
-Communication error code coverage
-Software error codes: definition
-Community feedback: setting up a Git page
+Hardware error codes: definition and coverage refined.
+Communication error code coverage.
+Software error codes: definition.
+Community feedback: setting up a Git page.
 
 Standardization links and references:
 Connection work with IEC/ISO 61851-23 work group (IEC/TC69/MT5), with error code definitions pointing to applicable IEC 61851-23 appendix content.
 EVSE to back office pathway based on OCPP 2.0.1 (with evaluation of OCPP 2.1 noted). 
-Diagnostic frameworks and naming/data structure work referencing ISO 14229 and SAE J2012 DTC concept
+Diagnostic frameworks and naming/data structure work referencing ISO 14229 and SAE J2012 DTC concept.
 
 ## Repository licensing
 
