@@ -6,3 +6,22 @@ This repository includes software and tools licensed under the Apache License, V
 See LICENSE_CODE.
 
 If this repository is redistributed, any required attributions shall be preserved as described in the Apache License 2.0, section 4(d).
+
+Developer Certificate of Origin (DCO)
+
+By contributing to this repository, you agree to license your contributions under the Project License:
+- Apache-2.0 for code contributions
+- CC-BY-4.0 for documentation/specification contributions
+
+All commits must include a Signed-off-by line (DCO). 
+Use: git commit -s
+
+or
+
+SPDX-License-Identifier: Apache-2.0
+Copyright CharIN e.V. and Contributors
+
+or
+
+SPDX-License-Identifier: CC-BY-4.0
+Copyright CharIN e.V. and Contributors
