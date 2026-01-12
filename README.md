@@ -87,6 +87,10 @@ Defining how these new Charging Station error codes relate to and integrate with
 * The project notes an ongoing connection with the **IEC/ISO 61851-23** work group (IEC/TC69/MT5), with error code definitions pointing to the applicable 61851-23 appendix.
 * IEC 61851 Appendix M includes a table defining EVSE error codes for error and emergency shutdown conditions.
 
+### Focus Group Project Plan
+<img width="1187" height="677" alt="image" src="https://github.com/user-attachments/assets/74665d5a-d62d-4763-89d8-58997291e9f1" />
+
+
 ## Contribute
 
 We believe that collaborative work can make error code unification an effective reality for the e-mobility industry.
