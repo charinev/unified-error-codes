@@ -46,4 +46,4 @@ The current maintainers for this repository, responsible for reviewing and mergi
 * Karol Nowacki (Working Group Deputy Leader)
     * GitHub: [@knowack1](https://github.com/knowack1)
 * Anais Bonnard (Technical Project Manager, CharIN)
-    * GitHub: [@AnaisBonnard](https://github.com/charinev)
+    * GitHub: [@AnaisBonnard](https://github.com/AnaisBonnard)
