@@ -94,7 +94,7 @@ Defining how these new Charging Station error codes relate to and integrate with
 ## Contribute
 
 We believe that collaborative work can make error code unification an effective reality for the e-mobility industry.
-All contributions are welcome. Please check the [contribution guidelines](NOTICE.md).
+All contributions are welcome. Please check the [contribution guidelines](CONTRIBUTING.md).
 
 This project uses a DCO-style sign-off process. Every contribution must be accompanied by a `Signed-off-by:` line in the commit message (commonly added via `git commit -s`).
 
