@@ -6,7 +6,7 @@
 
 This repository contains the draft specification for Unified Error Codes. It represents a joint effort to standardize error codes and diagnostics across the entire EV charging ecosystem.
 
-Here you can find the project materials related to **Unified Error Codes**, developed in the CharIN FG Charging Communication Subgroup - Error Codes. 
+Here you can find the project materials related to **Unified Error Codes**, developed in the CharIN FG Charging Communication Subgroup - Error Codes.
 
 ## The Problem
 
@@ -45,7 +45,7 @@ The subgroup’s work builds on existing error-code initiatives and publications
 
 * [DIN DKE SPEC 99003](https://www.dinmedia.de/en/technical-rule/din-dke-spec-99003/383541627)
 * [Korea Smart Grid Association: Fault Identification Numbers](https://ksga.org/sgstandard/Board/7260/detailView.do)
-* [MREC (Managed Recharging Error Codes)](https://inl.gov/chargex/mrec)
+* [MREC (Minimum Required Error Codes)](https://inl.gov/chargex/mrec)
 
 A large majority of the error codes defined in each of these specifications overlap. This signals a clear consensus in the market and a prime opportunity for a common, unified definition. These references provide a baseline for harmonized error-code definitions, improved interpretability, and more consistent diagnostics across the charging ecosystem.
 
