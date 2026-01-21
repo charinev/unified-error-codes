@@ -1,0 +1,41 @@
+name: Build Specification PDF Preview
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build PDF using Sphinx and LaTeX
+        uses: docker://sphinxdoc/sphinx-latexpdf:latest
+        with:
+          args: make -C specification latexpdf
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Specification PDF
+          path: specification/_build/latex/*.pdf
+
+      - name: Comment on PR with PDF
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ✅ **PDF Build Succeeded!**
+
+            Download the specification PDF from the [Artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) tab.
+          comment_tag: pdf-build-status
