@@ -1,0 +1,28 @@
+name: Build Specification PDF
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build-specification-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build PDF using Sphinx and LaTeX
+        uses: docker://sphinxdoc/sphinx-latexpdf:8.2.3
+        with:
+          args: make -C specification latexpdf
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Specification PDF
+          path: specification/_build/latex/*.pdf
