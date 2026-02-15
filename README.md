@@ -4,7 +4,9 @@
 
 # Unified Error Codes
 
-A draft specification for standardized error codes and diagnostics across the EV charging ecosystem, developed by the CharIN FG Charging Communication Subgroup.
+This repository contains the draft specification for Unified Error Codes. It represents a joint effort to standardize error codes and diagnostics across the entire EV charging ecosystem.
+
+Here you can find the project materials related to **Unified Error Codes**, developed in the CharIN FG Charging Communication Subgroup - Error Codes.
 
 > **Want to understand the vision and goals behind this project?** Read the [MANIFESTO](MANIFESTO.md).
 
@@ -25,6 +27,8 @@ A draft specification for standardized error codes and diagnostics across the EV
     - [Step 3: View the result](#step-3-view-the-result)
   - [How to Contribute](#how-to-contribute)
   - [Project Structure](#project-structure)
+  - [Governance](#governance)
+  - [Disclaimer](#disclaimer)
   - [Licensing](#licensing)
 
 ---
@@ -166,6 +170,20 @@ unified-error-codes/
     ├── make.bat           ← Build script (Windows).
     └── _build/            ← Generated output (do not edit).
 ```
+
+---
+
+## Governance
+
+This project is an open initiative led by the CharIN e.V. Working Group.
+We welcome contributions from the entire e-mobility community. All discussions, proposals, and changes will be managed transparently through GitHub Issues and Pull Requests.
+
+---
+
+## Disclaimer
+
+This specification should be seen as an addition to available industry standards and best practices.
+It is developed by the community, and everyone is free and invited to contribute.
 
 ---
 

@@ -1,12 +1,6 @@
-<p align="center">
-  <img src="https://github.com/charinev/opnc/assets/83767351/1688cfe1-97de-46c7-9b97-65bcec242193" alt="CharIN Logo" width="200"/>
-</p>
-
 # Unified Error Codes
 
-This repository contains the draft specification for Unified Error Codes. It represents a joint effort to standardize error codes and diagnostics across the entire EV charging ecosystem.
-
-Here you can find the project materials related to **Unified Error Codes**, developed in the CharIN FG Charging Communication Subgroup - Error Codes.
+Currently there is no standardized, comprehensive definition of error codes for EV charging stations. This leads to a fragmented landscape where each vendor implements its own proprietary set of error codes. This fragmentation significantly increases the effort and cost required to ensure network reliability.
 
 ## The Problem
 
@@ -89,45 +83,3 @@ Defining how these new Charging Station error codes relate to and integrate with
 
 ### Focus Group Project Plan
 <img width="1187" height="677" alt="image" src="https://github.com/user-attachments/assets/74665d5a-d62d-4763-89d8-58997291e9f1" />
-
-
-## Contribute
-
-We believe that collaborative work can make error code unification an effective reality for the e-mobility industry.
-All contributions are welcome. Please check the [contribution guidelines](CONTRIBUTING.md).
-
-This project uses a DCO-style sign-off process. Every contribution must be accompanied by a `Signed-off-by:` line in the commit message (commonly added via `git commit -s`).
-
-When contributing:
-
-* Code/tools contributions are submitted under **Apache-2.0**.
-* Documentation/specification contributions are submitted under **CC-BY-4.0**.
-
-## Governance
-
-This project is an open initiative led by the CharIN e.V. Working Group.
-We welcome contributions from the entire e-mobility community. All discussions, proposals, and changes will be managed transparently through GitHub Issues and Pull Requests.
-
-## Disclaimer
-
-This specification should be seen as an addition to available industry standards and best practices.
-It is developed by the community, and everyone is free and invited to contribute.
-
-## Licensing
-
-This repository uses a **mixed open-source licensing model**:
-
-* **Apache License 2.0 (Apache-2.0)** for software code and tools
-* **Creative Commons Attribution 4.0 International (CC-BY-4.0)** for documentation and specifications
-
-Required file headers:
-
-For software code files:
-
-* `SPDX-License-Identifier: Apache-2.0`
-* `Copyright CharIN e.V. and Contributors`
-
-For documentation and specification files:
-
-* `SPDX-License-Identifier: CC-BY-4.0`
-* `Copyright CharIN e.V. and Contributors`
