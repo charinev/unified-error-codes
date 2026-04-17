@@ -29,7 +29,7 @@ Trigger Conditions
 Related Telemetry
 =================
 
-The following telemetry signals are required for analyzing this error:
+The following telemetry signals are required for analyzing this error code:
 
 -  :ref:`telemetry_communication_state`
 -  :ref:`telemetry_supply_voltage_l1`
