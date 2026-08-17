@@ -17,4 +17,5 @@ for electric vehicle charging stations.
    error_codes/definitions_EVShiftPosition
    error_codes/definitions_ContactorPosition
    error_codes/definitions_Overvoltage
+   error_codes/definitions_LowTemperature
    telemetry/definitions

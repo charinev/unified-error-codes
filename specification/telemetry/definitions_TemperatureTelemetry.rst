@@ -2,30 +2,33 @@
    SPDX-License-Identifier: CC-BY-4.0
    Copyright CharIN e.V. and Contributors
 
-.. _telemetry_hightemperature_actual:
+.. _telemetry_temperature_actual:
 
-***********************
+********************
  Actual Temperature
-***********************
+********************
 
 -  **Description**: The measured temperature of the EVSE or EV component
-   reported as the source of the overtemperature condition.
+   reported as the source of the temperature fault.
 -  **Unit**: Degrees Celsius (°C)
 -  **Resolution**: `1 °C`
 
-.. _telemetry_hightemperature_threshold:
+.. _telemetry_temperature_threshold:
 
-*******************************
- Calibration Threshold
-*******************************
+***********************
+ Temperature Threshold
+***********************
 
--  **Description**: The calibrated safety or performance temperature threshold
-   for the reporting component, above which the overtemperature fault is
-   raised, as defined by the applicable standard or the manufacturer.
+-  **Description**: The calibrated safety or performance temperature
+   threshold for the reporting component, defined by the applicable standard
+   or the manufacturer. For an overtemperature fault this is the maximum
+   temperature above which the fault is raised; for an under-temperature
+   fault this is the minimum operating temperature below which the fault is
+   raised.
 -  **Unit**: Degrees Celsius (°C)
 -  **Resolution**: `1 °C`
 
-.. _telemetry_hightemperature_location:
+.. _telemetry_temperature_location:
 
 **********************
  Temperature Location

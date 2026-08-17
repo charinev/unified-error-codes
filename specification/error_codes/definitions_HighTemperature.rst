@@ -43,6 +43,6 @@ Related Telemetry
 
 The following telemetry signals are required for analyzing this error:
 
--  :ref:`telemetry_hightemperature_actual`
--  :ref:`telemetry_hightemperature_threshold`
--  :ref:`telemetry_hightemperature_location`
+-  :ref:`telemetry_temperature_actual`
+-  :ref:`telemetry_temperature_threshold`
+-  :ref:`telemetry_temperature_location`
