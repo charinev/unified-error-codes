@@ -8,6 +8,23 @@
 
 This section defines the error codes.
 
+.. _terminology_side_a_side_b:
+
+Terminology: Side A and Side B
+===============================
+
+Several error codes and telemetry signals reference measurement location
+using the terms **Side A** and **Side B**, per IEC 61851-23:2023 sections
+3.7.102 and 3.7.103:
+
+Side A
+   The supply interface — the EVSE terminals connected to the upstream
+   power source (e.g., grid or local generation).
+
+Side B
+   The vehicle interface — the physical connection between the EVSE and
+   the vehicle (connector or socket outlet).
+
 .. _error_gridpowerloss:
 
 **************
@@ -41,3 +58,4 @@ The following telemetry signals are required for analyzing this error:
 .. include:: definitions_ConnectorLockFailure.rst
 .. include:: definitions_HighTemperature.rst
 .. include:: definitions_PowerModuleFault.rst
+.. include:: definitions_UnderVoltage.rst
