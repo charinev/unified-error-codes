@@ -1,0 +1,207 @@
+-- SPDX-License-Identifier: CC-BY-4.0
+-- Copyright CharIN e.V. and Contributors
+--
+-- Canonical ASN.1 module for the CharIN Unified Error Codes exchange
+-- message. See specification/protocol/definitions_ErrorCodeExchangeMessage.rst
+-- for the normative field-by-field description.
+
+UnifiedErrorCodeExchange-ISO15118-202 DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+EXPORTS ALL;
+
+-- =============================================================================
+-- ErrorCodeReport
+--
+-- Carries a single CharIN Unified Error Code report between an EV and an
+-- EVSE over the Event Notification Protocol (ENP) specified by
+-- ISO 15118-202 ("Extensible SECC Discovery Protocol and Event
+-- Notification Protocol", currently at Draft PAS stage). ENP is designed
+-- to run alongside either ISO 15118-2 or ISO 15118-20 — including before
+-- or independent of an active V2G session under either of them — which is
+-- why most fields below are OPTIONAL. This is deliberately the minimum
+-- data set needed to identify who raised an error, in which
+-- session/protocol context, and which Unified Error Code applies; it is
+-- not a general-purpose telemetry envelope.
+--
+-- Encoding: ISO 15118-202 normatively references ISO/IEC 8825-7 (ITU-T
+-- X.696), which specifies both basic and canonical Octet Encoding Rules.
+-- This message SHALL use the canonical variant (COER), as proposed in
+-- GitHub issue #61, so that a given report has exactly one valid
+-- encoding. When relayed to a charging management system, the same
+-- schema MAY be re-encoded using the JSON Encoding Rules (JER, ITU-T
+-- X.697), e.g. as the `eventData` payload of an OCPP 2.0.1
+-- NotifyEventRequest.
+-- =============================================================================
+
+ErrorCodeReport ::= SEQUENCE {
+    metadata    BasicMetadata,
+    errorCode   UnifiedErrorCode,
+    telemetry   Telemetry OPTIONAL,
+    ...
+}
+
+-- -----------------------------------------------------------------------------
+-- Basic Metadata
+--
+-- Identifies the participants, negotiated protocol, and session an error
+-- occurred in. evseID and evccID are each OPTIONAL because an ESDP/ENP-
+-- signalled error can occur before either side has learned the other's
+-- identifier: the EV does not learn the EVSEID until SDP/SessionSetupRes,
+-- and the EVSE does not learn the EVCCID until SLAC/SDP completes.
+-- communicationProtocol, and every field of sessionContext except
+-- timestamp, are OPTIONAL for the same reason: an ESDP/ENP-signalled
+-- error can occur before application-protocol negotiation, or even
+-- before a V2G session exists. timestamp is always required.
+-- -----------------------------------------------------------------------------
+
+BasicMetadata ::= SEQUENCE {
+    evseID                  EVSEID OPTIONAL,
+    evccID                  EVCCID OPTIONAL,
+    communicationProtocol   CommunicationProtocol OPTIONAL,
+    sessionContext          SessionContext,
+    ...
+}
+
+EVSEID ::= UTF8String (SIZE (1..37))
+-- EVSE identifier. The upper bound follows the maximum length of
+-- ISO 15118-2's EVSEIDType; the lower bound is deliberately permissive
+-- rather than mirroring that type's minimum, so that an EVSE reporting
+-- before it has a fully-formed identifier is still representable.
+-- OPTIONAL at the BasicMetadata level because an EV-reported pre-session
+-- error cannot include an EVSEID the EV has not yet learned (the EVSEID
+-- is first returned to the EV in SessionSetupRes, at the earliest).
+
+EVCCID ::= OCTET STRING (SIZE (6..8))
+-- EV Communication Controller identifier, per ISO 15118-2 Annex A.1
+-- (EVCCIDType, hexBinary, 6 to 8 octets: a 6-byte EUI-48 MAC address, or
+-- an 8-byte EUI-64 address). OPTIONAL at the BasicMetadata level because
+-- it is not yet known when an error is signalled before SLAC/SDP completes.
+
+CommunicationProtocol ::= SEQUENCE {
+    protocolNamespace   UTF8String (SIZE (1..100)) OPTIONAL,
+    versionMajor        INTEGER (0..255) OPTIONAL,
+    versionMinor        INTEGER (0..255) OPTIONAL,
+    schemaID            INTEGER (0..255) OPTIONAL,
+    priority            INTEGER (1..20) OPTIONAL,
+    ...
+}
+-- Mirrors the AppProtocolType negotiated in SupportedAppProtocolReq/Res.
+-- A separate protocolName field was intentionally dropped: protocolNamespace
+-- already identifies the protocol unambiguously (see GitHub issue #61).
+
+SessionContext ::= SEQUENCE {
+    sessionID     OCTET STRING (SIZE (1..8)) OPTIONAL,
+    messageName   UTF8String (SIZE (1..40)) OPTIONAL,
+    timestamp     GeneralizedTime,
+    ...
+}
+-- sessionID is the V2G session identifier assigned in SessionSetupRes, so
+-- it is OPTIONAL because it does not exist before that message is
+-- exchanged. Its SIZE range (1..8) matches ISO 15118-2's sessionIDType
+-- (hexBinary, maxLength 8, no minimum): the 8-octet form carries an
+-- assigned session identifier, while the 1-octet form covers the reserved
+-- single-byte 0x00 "no active session" encoding used elsewhere in
+-- ISO 15118-2. A separate couplingSessionID field was intentionally
+-- dropped per GitHub issue #61 review feedback.
+-- messageName SHOULD be populated with the V2GMessageType (ISO 15118-2
+-- Table 8) or SLACMessageType (ISO 15118-2 Table 4) name most closely
+-- associated with the fault, when known.
+-- timestamp uses GeneralizedTime rather than a free-form string so that
+-- COER and JER encoders/decoders both enforce a single, unambiguous
+-- date-time representation (equivalent to RFC 3339 / ISO 8601).
+
+-- -----------------------------------------------------------------------------
+-- Unified Error Code
+-- -----------------------------------------------------------------------------
+
+UnifiedErrorCode ::= SEQUENCE {
+    codeName   UTF8String (SIZE (1..64)),
+    ...
+}
+-- codeName SHALL match the name of an error code defined in the CharIN
+-- Unified Error Codes specification, section "Error Codes" (e.g.
+-- "GridPowerLoss", "SideB_OverCurrentFailure").
+--
+-- There is deliberately no field identifying which side raised the
+-- error. ENP already carries that: an ENP message is sent either by the
+-- EVCC or by the SECC, so the receiver knows which one reported it.
+-- Restating it here would be redundant, and could contradict the
+-- transport if the two ever disagreed.
+--
+-- Nor does the code name carry where the condition was measured. That is
+-- a telemetry signal (e.g. Telemetry_SideB_OverCurrent_Location, whose
+-- values are EVSE, EV or unknown), reported in the telemetry field
+-- below, so that one code name covers the condition wherever it occurs.
+
+-- -----------------------------------------------------------------------------
+-- Telemetry
+--
+-- The measurements that make a reported error diagnosable. Each error
+-- code in the CharIN Unified Error Codes specification lists the
+-- telemetry signals required to analyse it under "Related Telemetry"; a
+-- sender SHOULD include those signals for the code it reports, and MAY
+-- include others.
+--
+-- The field is OPTIONAL because a report can be raised before any
+-- measurement is available — an error signalled ahead of high-level
+-- communication, for instance.
+-- -----------------------------------------------------------------------------
+
+Telemetry ::= SEQUENCE (SIZE (1..MAX)) OF TelemetrySignal
+
+TelemetrySignal ::= SEQUENCE {
+    name    UTF8String (SIZE (1..64)),
+    value   TelemetryValue,
+    ...
+}
+-- name SHALL match the name of a telemetry signal defined in the CharIN
+-- Unified Error Codes specification, section "Telemetry" (e.g.
+-- "Telemetry_SideB_OverCurrent_ActualCurrent").
+
+TelemetryValue ::= CHOICE {
+    scaled   INTEGER,
+    text     UTF8String (SIZE (1..64)),
+    ...
+}
+-- scaled: a measurement expressed as a whole multiple of the resolution
+-- the signal declares, so no floating-point representation is needed on
+-- the wire. A signal with a resolution of 0.1 A sending 1503 means
+-- 150.3 A. The unit is the one the signal declares and is not repeated
+-- here.
+-- text: for signals whose values are a named set rather than a
+-- measurement, carrying one of the names that signal defines.
+
+-- =============================================================================
+-- ENP Extension Registration
+--
+-- ISO 15118-202 carries ENP extensions in a registry whose entries pair a
+-- unique 16-octet identifier with the ASN.1 type that identifier selects.
+-- ISO publishes that registry as a machine-readable ASN.1 module,
+-- ENPExtensions.asn, separately from the (paywalled) prose document:
+--   https://standards.iso.org/iso/pas/15118/-202/ed-1/en/ENPExtensions.asn
+-- Its types are ISO's own and are neither reproduced nor redistributed
+-- here; consult that module for their normative definitions.
+--
+-- As published, the registry holds six narrowly-scoped extensions (EVSE
+-- grid information, grid code impact level, EV/EVSE stop reason, EV/EVSE
+-- derating reason) — none carries a general-purpose error code. GitHub
+-- issue #65 proposes registering ErrorCodeReport (this module's root
+-- type) as a new entry for exactly that purpose:
+--   https://github.com/charinev/unified-error-codes/issues/65
+--
+-- Proposed registration — NOT ratified, and not assigned by the working
+-- group; see #65 for its status:
+--   identifier (UUID v4): 0F9FA02C-B967-40FF-AF1D-50BF09A1D8DC
+--   selected type:        ErrorCodeReport (this module)
+--
+-- ISO's registry is built on an X.681 Information Object Class, which
+-- current open-source ASN.1 compilers cannot yet process (see the EVerest
+-- project's investigation, github.com/EVerest/EVerest-archived issue
+-- #259). The demo under examples/error-code-exchange therefore defines
+-- its own simplified, tool-compatible stand-in rather than compiling
+-- against ISO's module; that stand-in is demonstration scaffolding and
+-- forms no part of this specification.
+-- =============================================================================
+
+END

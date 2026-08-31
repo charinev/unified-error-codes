@@ -1,0 +1,35 @@
+-- SPDX-License-Identifier: Apache-2.0
+-- Copyright CharIN e.V. and Contributors
+--
+-- DEMONSTRATION SCAFFOLDING — NOT PART OF THE SPECIFICATION.
+--
+-- ISO 15118-202 carries ENP extensions in a registry that pairs a unique
+-- 16-octet identifier with the ASN.1 type that identifier selects. That
+-- registry is built on an X.681 Information Object Class, which current
+-- open-source ASN.1 compilers cannot yet process (see the EVerest
+-- project's investigation, github.com/EVerest/EVerest-archived issue
+-- #259), so this demo cannot compile against ISO's own module.
+--
+-- ErrorCodeExtension below stands in for one such registry entry, with
+-- the same two components — a 16-octet identifier plus a payload — so the
+-- demo can show the intended wire structure end to end. It is a local
+-- simplification, not a proposal: what GitHub issue #65 actually proposes
+-- registering is ErrorCodeReport itself, from
+-- specification/protocol/UnifiedErrorCodeExchange.asn1.
+
+DemoEnpExtension DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+ErrorCodeExtension ::= SEQUENCE {
+    extensionID      OCTET STRING (SIZE (16)),
+    extensionValue   OCTET STRING,
+    ...
+}
+-- extensionID: the UUID proposed in issue #65 for the Error Code
+-- Extension, sized to match ISO's 16-octet identifier.
+-- extensionValue: a COER-encoded ErrorCodeReport. ISO's registry would
+-- carry this as an open type selected by extensionID; here it is an
+-- opaque OCTET STRING that the demo encodes and decodes in a separate
+-- step.
+
+END
