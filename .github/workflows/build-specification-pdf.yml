@@ -18,6 +18,8 @@ jobs:
 
       - name: Build PDF using Sphinx and LaTeX
         uses: docker://sphinxdoc/sphinx-latexpdf:8.2.3
+        env:
+          SPHINXOPTS: "-W --keep-going"
         with:
           args: make -C specification latexpdf
 
