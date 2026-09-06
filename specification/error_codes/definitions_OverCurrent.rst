@@ -2,11 +2,11 @@
    SPDX-License-Identifier: CC-BY-4.0
    Copyright CharIN e.V. and Contributors
 
-_error_sideb_overcurrent:
+.. _error_sideb_overcurrent:
 
-**********************
+**************************
  SideB_OverCurrentFailure
-**********************
+**************************
 
 Description
 ===========
