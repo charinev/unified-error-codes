@@ -9,7 +9,7 @@
 *******************************
 
 Message
-=======
+=========
 
 An error code is reported in a ``StatusNotification.req`` message.
 
@@ -94,7 +94,7 @@ cause. Reporting several error codes as a correlated group is out of scope in
 this edition.
 
 Example
-=======
+=========
 
 A contactor that failed to reach its commanded state, reported against
 connector 1:
