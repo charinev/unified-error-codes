@@ -2,12 +2,19 @@
    SPDX-License-Identifier: CC-BY-4.0
    Copyright CharIN e.V. and Contributors
 
-###########
- Telemetry
-###########
+###########################################
+ Annex A (informative) — Telemetry Signals
+###########################################
 
-This section defines the telemetry signals that shall be monitored by
-the charging station.
+This annex is informative. It states no requirements, and nothing in it is
+needed to conform to this document.
+
+It lists the telemetry signals that make each error code diagnosable, and each
+error code refers to the signals relevant to it. The signals are published
+here for early feedback while the group settles how telemetry should be
+delivered to a charging management system; until that is settled, specifying
+the signals normatively would fix a data model to a delivery mechanism that
+does not yet exist.
 
 .. _telemetry_supply_voltage_l1:
 
