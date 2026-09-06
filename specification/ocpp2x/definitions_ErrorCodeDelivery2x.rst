@@ -9,7 +9,7 @@
 *******************************
 
 Message
-=======
+=========
 
 An error code is reported in a ``NotifyEventRequest`` message.
 
@@ -140,7 +140,7 @@ touches it is ``EventDataType.severity``, which OCPP 2.1 adds and this document
 does not use.
 
 Example
-=======
+=========
 
 A contactor that failed to reach its commanded state, reported against
 connector 1 of EVSE 1:
