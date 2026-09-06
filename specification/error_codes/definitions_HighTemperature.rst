@@ -4,9 +4,9 @@
 
 .. _error_hightemperature:
 
-******************
- High Temperature
-******************
+*****************
+ HighTemperature
+*****************
 
 Description
 ===========

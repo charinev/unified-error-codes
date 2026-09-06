@@ -2,7 +2,7 @@
    SPDX-License-Identifier: CC-BY-4.0
    Copyright CharIN e.V. and Contributors
 
-.. _Telemetry_SideB_OverCurrent_Location:
+.. _Telemetry_OverCurrent_Location:
 
 ************************
  OverCurrent Location
@@ -12,7 +12,7 @@
 -  **Unit**: N/A
 -  **Resolution**: N/A
 
-.. _Telemetry_SideB_OverCurrent_ActualCurrent:
+.. _Telemetry_OverCurrent_ActualCurrent:
 
 ***********************
  Actual Current
@@ -23,7 +23,7 @@
 -  **Unit**: Amperes (A)
 -  **Resolution**: 0.1 A
 
-.. _Telemetry_SideB_OverCurrent_ThresholdCurrent:
+.. _Telemetry_OverCurrent_ThresholdCurrent:
 
 ***********************
  Threshold Current
