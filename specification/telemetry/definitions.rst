@@ -75,3 +75,4 @@ the charging station.
 .. include:: definitions_ConnectorLockTelemetry.rst
 .. include:: definitions_TemperatureTelemetry.rst
 .. include:: definitions_PowerModuleTelemetry.rst
+.. include:: definitions_UnderCurrentTelemetry.rst

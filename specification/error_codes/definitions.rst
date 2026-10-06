@@ -41,3 +41,4 @@ The following telemetry signals are required for analyzing this error:
 .. include:: definitions_ConnectorLockFailure.rst
 .. include:: definitions_HighTemperature.rst
 .. include:: definitions_PowerModuleFault.rst
+.. include:: definitions_UnderCurrent.rst
