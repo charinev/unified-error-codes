@@ -1,0 +1,169 @@
+-- SPDX-License-Identifier: CC-BY-4.0
+-- Copyright CharIN e.V. and Contributors
+
+UnifiedErrorCodeExchange DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+EXPORTS ALL;
+
+-- Unified Error Code extension
+--
+-- The identifier is a proposal and is not yet registered; see issue #65.
+
+errorCodeExtensionID OCTET STRING (SIZE (16)) ::= '0F9FA02CB96740FFAF1D50BF09A1D8DC'H
+
+-- A message carries one or more error code reports. A report names the
+-- error code and, where the code has related telemetry, carries the
+-- signals listed under its "Related Telemetry". An integer is a whole
+-- multiple of the resolution the signal declares in the "Telemetry"
+-- section.
+--
+-- A value from a fixed list is a UTF8String limited to that list, not an
+-- ENUMERATED, so that it keeps the capitalization of the specification,
+-- which ASN.1 identifiers cannot have.
+
+ErrorCodeExtension ::= SEQUENCE (SIZE (1..MAX)) OF ErrorCodeReport
+
+ErrorCodeReport ::= SEQUENCE {
+    eventId    EventId,
+    timestamp  GeneralizedTime,
+    origin     ErrorOrigin,
+    code       ERROR-CODE.&id({ErrorCodes}),
+    telemetry  ERROR-CODE.&Telemetry({ErrorCodes}{@code}) OPTIONAL,
+    ...
+}
+
+EventId ::= OCTET STRING (SIZE (16))
+-- eventId is a UUID (RFC 9562) that identifies the report. The side that
+-- detects the error creates it, and it stays the same when the report is
+-- forwarded.
+
+ErrorOrigin ::= UTF8String ("EV" | "EVSE", ...)
+-- origin is the side on which the error was detected. timestamp is the
+-- time the error was detected, in UTC and to the second, in the form
+-- YYYYMMDDhhmmssZ.
+
+ERROR-CODE ::= CLASS {
+    &id         ErrorCodeId UNIQUE,
+    &Telemetry  OPTIONAL
+}
+WITH SYNTAX { CODE &id [TELEMETRY &Telemetry] }
+
+ErrorCodeId ::= UTF8String (
+    "GridPowerLoss" |
+    "EVShiftPosition" |
+    "ContactorPosition" |
+    "ConnectorLockFailure" |
+    "HighTemperature" |
+    "LowTemperature" |
+    "PowerModuleFault" |
+    "Overvoltage" |
+    "SideBOverCurrentFailure",
+    ...
+)
+-- The names are the ones of the error codes.
+
+-- telemetry is absent for a code that has no related telemetry.
+
+ErrorCodes ERROR-CODE ::= {
+    { CODE "GridPowerLoss"            TELEMETRY GridPowerLoss } |
+    { CODE "EVShiftPosition" } |
+    { CODE "ContactorPosition" } |
+    { CODE "ConnectorLockFailure"     TELEMETRY ConnectorLockFailure } |
+    { CODE "HighTemperature"          TELEMETRY Temperature } |
+    { CODE "LowTemperature"           TELEMETRY Temperature } |
+    { CODE "PowerModuleFault"         TELEMETRY PowerModuleFault } |
+    { CODE "Overvoltage" } |
+    { CODE "SideBOverCurrentFailure"  TELEMETRY SideBOverCurrentFailure },
+    ...
+}
+
+GridPowerLoss ::= SEQUENCE {
+    communicationState   CommunicationState,
+    supplyVoltageL1      INTEGER (0..MAX),
+    supplyVoltageL2      INTEGER (0..MAX) OPTIONAL,
+    supplyVoltageL3      INTEGER (0..MAX) OPTIONAL,
+    ...
+}
+-- supplyVoltageL1..L3: volts, resolution 1 V. L2 and L3 are absent on a
+-- single-phase supply.
+
+CommunicationState ::= UTF8String (
+    "SLAC" |
+    "SDP" |
+    "CommunicationSetup" |
+    "ServiceDiscovery" |
+    "PaymentSelection" |
+    "CertificateInstallation" |
+    "CertificateUpdate" |
+    "Authorization" |
+    "ChargeParameterDiscovery" |
+    "CableCheck" |
+    "PreCharge" |
+    "CurrentDemand" |
+    "WeldingDetection" |
+    "SessionStop",
+    ...
+)
+
+ConnectorLockFailure ::= SEQUENCE {
+    position   ConnectorLockPosition,
+    command    ConnectorLockCommand,
+    ...
+}
+
+ConnectorLockPosition ::= UTF8String ("Locked" | "Unlocked" | "Unknown", ...)
+
+ConnectorLockCommand ::= UTF8String ("Lock" | "Unlock" | "None", ...)
+
+Temperature ::= SEQUENCE {
+    actualTemperature      INTEGER (-273..MAX),
+    calibrationThreshold   INTEGER (-273..MAX),
+    location               TemperatureLocation,
+    ...
+}
+-- actualTemperature, calibrationThreshold: degrees Celsius, resolution 1 C.
+-- calibrationThreshold is the maximum for HighTemperature and the minimum
+-- for LowTemperature.
+
+TemperatureLocation ::= UTF8String (
+    "Cable" |
+    "CablePositive" |
+    "CableNegative" |
+    "CableHousingPositive" |
+    "CableHousingNegative" |
+    "ConnectorPositive" |
+    "ConnectorNegative" |
+    "PowerModulesSideA" |
+    "PowerModulesSideB" |
+    "Electronics" |
+    "Socket" |
+    "SocketPositive" |
+    "SocketNegative" |
+    "Battery" |
+    "Body",
+    ...
+)
+
+PowerModuleFault ::= SEQUENCE {
+    identifier          UTF8String (SIZE (1..64)),
+    location            UTF8String (SIZE (1..64)),
+    specificErrorCode   UTF8String (SIZE (1..64)),
+    vendor              UTF8String (SIZE (1..64)),
+    model               UTF8String (SIZE (1..64)),
+    firmwareVersion     UTF8String (SIZE (1..64)),
+    ...
+}
+
+SideBOverCurrentFailure ::= SEQUENCE {
+    location           OverCurrentLocation,
+    actualCurrent      INTEGER (0..MAX),
+    thresholdCurrent   INTEGER (0..MAX),
+    ...
+}
+-- actualCurrent, thresholdCurrent: amperes, resolution 0.1 A. 1503 means
+-- 150.3 A.
+
+OverCurrentLocation ::= UTF8String ("EVSE" | "EV" | "Unknown", ...)
+
+END

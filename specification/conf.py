@@ -15,6 +15,8 @@ author = 'CharIN e.V. and Contributors'
 
 extensions = []
 
+numfig = True
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**/definitions_*.rst']
 
