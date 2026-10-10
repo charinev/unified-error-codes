@@ -72,6 +72,26 @@ the charging station.
    -  ``WeldingDetection`` — Error occurred during WeldingDetection.
    -  ``SessionStop`` — Error occurred during SessionStop.
 
+.. _telemetry_error_severity:
+
+****************
+ Error Severity
+****************
+
+-  **Description**: The operational impact of the error on the charging
+   session, reported by the system that raised it.
+-  **Unit**: N/A
+-  **Resolution**: N/A
+-  **Values**:
+
+   -  ``Warning`` - The condition was detected but the session continues,
+      possibly with reduced power.
+   -  ``Failed`` - The session was terminated and can be restarted without
+      service intervention.
+   -  ``Fatal`` - The session was terminated and the equipment requires
+      service intervention before the next session.
+
 .. include:: definitions_ConnectorLockTelemetry.rst
 .. include:: definitions_TemperatureTelemetry.rst
 .. include:: definitions_PowerModuleTelemetry.rst
+.. include:: definitions_UnderVoltageTelemetry.rst
