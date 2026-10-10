@@ -8,6 +8,12 @@
 
 This section defines the error codes.
 
+Error codes are identified by name rather than by number, so that they stay
+stable as the catalogue grows. Names are written in UpperCamelCase, without
+spaces or separators. Where a condition was observed is carried by telemetry
+rather than by the name, so that one name covers the condition wherever it
+occurs.
+
 .. _error_gridpowerloss:
 
 **************

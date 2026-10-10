@@ -2,11 +2,11 @@
    SPDX-License-Identifier: CC-BY-4.0
    Copyright CharIN e.V. and Contributors
 
-_error_sideb_overcurrent:
+.. _error_overcurrent:
 
-**********************
- SideB_OverCurrentFailure
-**********************
+*************
+ OverCurrent
+*************
 
 Description
 ===========
@@ -29,7 +29,7 @@ Related Telemetry
 
 The following telemetry signals are required for analyzing this error:
 
--  :ref:`Telemetry_SideB_OverCurrent_Location`
--  :ref:`Telemetry_SideB_OverCurrent_ActualCurrent`
--  :ref:`Telemetry_SideB_OverCurrent_ThresholdCurrent`
+-  :ref:`Telemetry_OverCurrent_Location`
+-  :ref:`Telemetry_OverCurrent_ActualCurrent`
+-  :ref:`Telemetry_OverCurrent_ThresholdCurrent`
 
