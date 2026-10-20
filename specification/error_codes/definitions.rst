@@ -43,3 +43,4 @@ The following telemetry signals are required for analyzing this error:
 .. include:: definitions_PowerModuleFault.rst
 .. include:: definitions_Overvoltage.rst
 .. include:: definitions_OverCurrent.rst
+.. include:: definitions_UnderCurrent.rst

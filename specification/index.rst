@@ -13,5 +13,6 @@ for electric vehicle charging stations.
    :maxdepth: 2
    :caption: Contents:
 
+   terms
    error_codes/definitions
    telemetry/definitions
