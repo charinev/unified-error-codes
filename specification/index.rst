@@ -16,3 +16,4 @@ for electric vehicle charging stations.
    terms
    error_codes/definitions
    telemetry/definitions
+   exchange/definitions

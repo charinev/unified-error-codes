@@ -1,0 +1,205 @@
+-- SPDX-License-Identifier: CC-BY-4.0
+-- Copyright CharIN e.V. and Contributors
+
+UnifiedErrorCodeExchange DEFINITIONS AUTOMATIC TAGS ::=
+BEGIN
+
+EXPORTS ALL;
+
+-- Unified Error Code extension
+--
+-- The identifier is a proposal and is not yet registered; see issue #65.
+
+errorCodeExtensionID OCTET STRING (SIZE (16)) ::= '0F9FA02CB96740FFAF1D50BF09A1D8DC'H
+
+-- A message carries one or more error code reports. A report names the
+-- error code and, where the code has related telemetry, carries the
+-- signals listed under its "Related Telemetry". A measured quantity is a
+-- PhysicalValue in the unit the signal declares in the "Telemetry"
+-- section.
+--
+-- A value from a fixed list is a UTF8String limited to that list, not an
+-- ENUMERATED, so that it keeps the capitalization of the specification,
+-- which ASN.1 identifiers cannot have.
+
+ErrorCodeExtension ::= SEQUENCE (SIZE (1..MAX)) OF ErrorCodeReport
+
+ErrorCodeReport ::= SEQUENCE {
+    eventId    EventId,
+    timestamp  GeneralizedTime,
+    origin     ErrorOrigin,
+    code       ERROR-CODE.&id({ErrorCodes}),
+    state      ErrorState OPTIONAL,
+    telemetry  ERROR-CODE.&Telemetry({ErrorCodes}{@code}) OPTIONAL,
+    ...
+}
+
+EventId ::= VisibleString (SIZE (36))
+-- eventId is a UUID (RFC 9562) that identifies the error, in the string
+-- form of chapter 4 of RFC 9562, for example
+-- 3f0c2b7e-5d1a-4c8e-9b64-7a2e1d90c5f3. The side that detects the error
+-- creates it, and it stays the same when the report is forwarded. The
+-- Started and Ended reports of one error have the same eventId.
+
+ErrorOrigin ::= UTF8String ("EV" | "EVSE", ...)
+-- origin is the side on which the error was detected. timestamp is the
+-- time the error was detected, or for an Ended report the time it ended,
+-- in UTC and to the second, in the form YYYYMMDDhhmmssZ.
+
+ErrorState ::= UTF8String ("Started" | "Ended", ...)
+-- state is Started when an error begins and Ended when it is gone. It is
+-- absent for a transient error, one that is over as soon as it is
+-- detected, which is reported once (one shot).
+
+ERROR-CODE ::= CLASS {
+    &id         ErrorCodeId UNIQUE,
+    &Telemetry  OPTIONAL
+}
+WITH SYNTAX { CODE &id [TELEMETRY &Telemetry] }
+
+ErrorCodeId ::= UTF8String (
+    "GridPowerLoss" |
+    "EVShiftPosition" |
+    "ContactorPosition" |
+    "ConnectorLockFailure" |
+    "HighTemperature" |
+    "LowTemperature" |
+    "PowerModuleFault" |
+    "Overvoltage" |
+    "OverCurrent" |
+    "UnderCurrent",
+    ...
+)
+-- The names are the ones of the error codes.
+
+-- telemetry is absent for a code that has no related telemetry.
+
+ErrorCodes ERROR-CODE ::= {
+    { CODE "GridPowerLoss"            TELEMETRY GridPowerLoss } |
+    { CODE "EVShiftPosition" } |
+    { CODE "ContactorPosition" } |
+    { CODE "ConnectorLockFailure"     TELEMETRY ConnectorLockFailure } |
+    { CODE "HighTemperature"          TELEMETRY Temperature } |
+    { CODE "LowTemperature"           TELEMETRY Temperature } |
+    { CODE "PowerModuleFault"         TELEMETRY PowerModuleFault } |
+    { CODE "Overvoltage"              TELEMETRY Overvoltage } |
+    { CODE "OverCurrent"              TELEMETRY OverCurrent } |
+    { CODE "UnderCurrent"             TELEMETRY UnderCurrent },
+    ...
+}
+
+PhysicalValue ::= SEQUENCE {
+    value       INTEGER (-32768..32767),
+    multiplier  INTEGER (-3..3) DEFAULT 0,
+    unit        Unit OPTIONAL,
+    ...
+}
+-- As PhysicalValueType of DIN DKE SPEC 99003. The quantity is
+-- value x 10^multiplier, for example value 1503 and multiplier -1 for
+-- 150.3 A. unit, when present, is the unit the signal declares.
+
+Unit ::= UTF8String (
+    "W" |
+    "Wh" |
+    "A" |
+    "V" |
+    "s" |
+    "K" |
+    "Celsius" |
+    "%" |
+    "Ohm",
+    ...
+)
+-- The units of UnitType of DIN DKE SPEC 99003.
+
+GridPowerLoss ::= SEQUENCE {
+    supplyVoltageL1      PhysicalValue,
+    supplyVoltageL2      PhysicalValue OPTIONAL,
+    supplyVoltageL3      PhysicalValue OPTIONAL,
+    ...
+}
+-- supplyVoltageL1..L3: volts. L2 and L3 are absent on a single-phase
+-- supply.
+
+ConnectorLockFailure ::= SEQUENCE {
+    position   ConnectorLockPosition,
+    command    ConnectorLockCommand,
+    ...
+}
+
+ConnectorLockPosition ::= UTF8String ("Locked" | "Unlocked" | "Unknown", ...)
+
+ConnectorLockCommand ::= UTF8String ("Lock" | "Unlock" | "None", ...)
+
+Temperature ::= SEQUENCE {
+    actualTemperature      PhysicalValue,
+    threshold              PhysicalValue,
+    location               TemperatureLocation,
+    ...
+}
+-- actualTemperature, threshold: degrees Celsius.
+-- threshold is the maximum for HighTemperature and the minimum
+-- for LowTemperature.
+
+TemperatureLocation ::= UTF8String (
+    "Cable" |
+    "CablePositive" |
+    "CableNegative" |
+    "CableHousingPositive" |
+    "CableHousingNegative" |
+    "ConnectorPositive" |
+    "ConnectorNegative" |
+    "PowerModulesSideA" |
+    "PowerModulesSideB" |
+    "Electronics" |
+    "Socket" |
+    "SocketPositive" |
+    "SocketNegative" |
+    "Battery" |
+    "Body",
+    ...
+)
+
+PowerModuleFault ::= SEQUENCE {
+    identifier          UTF8String (SIZE (1..64)),
+    location            UTF8String (SIZE (1..64)),
+    specificErrorCode   UTF8String (SIZE (1..64)),
+    vendor              UTF8String (SIZE (1..64)),
+    model               UTF8String (SIZE (1..64)),
+    firmwareVersion     UTF8String (SIZE (1..64)),
+    ...
+}
+
+Overvoltage ::= SEQUENCE {
+    side                 OvervoltageSide,
+    actualVoltage        PhysicalValue,
+    thresholdVoltage     PhysicalValue,
+    exceedanceDuration   PhysicalValue,
+    ...
+}
+-- actualVoltage, thresholdVoltage: volts. exceedanceDuration: the signal
+-- declares milliseconds, which is seconds with multiplier -3; 0 for an
+-- instantaneous exceedance.
+
+OvervoltageSide ::= UTF8String ("SideA" | "SideB", ...)
+
+OverCurrent ::= SEQUENCE {
+    location           OverCurrentLocation,
+    actualCurrent      PhysicalValue,
+    thresholdCurrent   PhysicalValue,
+    ...
+}
+-- actualCurrent, thresholdCurrent: amperes.
+
+OverCurrentLocation ::= UTF8String ("EVSE" | "EV" | "Unknown", ...)
+
+UnderCurrent ::= SEQUENCE {
+    expectedCurrentOutput   PhysicalValue,
+    actualCurrentOutput     PhysicalValue,
+    duration                PhysicalValue,
+    ...
+}
+-- expectedCurrentOutput, actualCurrentOutput: amperes. duration: the
+-- signal declares milliseconds, which is seconds with multiplier -3.
+
+END
