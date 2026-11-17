@@ -8,7 +8,7 @@
  Actual Voltage
 *****************
 
--  **Description**: The measured voltage at the reporting side at the time the
+-  **Description**: The measured voltage at Side B at the time the
    overvoltage condition was detected.
 -  **Unit**: Volts (V)
 -  **Resolution**: `1 V`
@@ -19,26 +19,11 @@
  Threshold Voltage
 ********************
 
--  **Description**: The allowable voltage limit for the reporting side, above
+-  **Description**: The allowable voltage limit for Side B, above
    which the overvoltage fault is raised, as defined by the applicable standard
    or the manufacturer.
 -  **Unit**: Volts (V)
 -  **Resolution**: `1 V`
-
-.. _telemetry_overvoltage_side:
-
-**********************
- Overvoltage Side
-**********************
-
--  **Description**: The measurement location at which the overvoltage was
-   observed.
--  **Values**:
-
-   -  ``SideA`` — Supply interface, at the EVSE terminals connected to the
-      upstream power source.
-   -  ``SideB`` — Vehicle interface, at the physical connection between the
-      EVSE and the vehicle.
 
 .. _telemetry_overvoltage_duration:
 
