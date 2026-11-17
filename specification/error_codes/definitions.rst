@@ -23,8 +23,8 @@ complete loss of grid power supply.
 Trigger Conditions
 ==================
 
--  The power supply voltage at Side A or Side B of the EVSE drops below a
-   critical threshold as described by the manufacturer.
+-  The power supply voltage at Side A of the EVSE drops below a critical
+   threshold as described by the manufacturer.
 
 Related Telemetry
 =================
